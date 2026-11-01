@@ -141,6 +141,9 @@ export function calculateProduction(assetsToSummarize, periodId = "today") {
     0,
   ));
   const complete = missingSamples === 0;
+  const unit = periodId === "today"
+    ? overviewData.metadata.productionUnit
+    : overviewData.metadata.productionUnit.replace(" per day", ` over ${days} days`);
 
   return {
     production,
@@ -148,7 +151,7 @@ export function calculateProduction(assetsToSummarize, periodId = "today") {
     attainmentPercent: complete && target > 0 ? (production / target) * 100 : null,
     complete,
     missingSamples,
-    unit: overviewData.metadata.productionUnit,
+    unit,
   };
 }
 
@@ -342,17 +345,20 @@ export function selectRegionSummaries(
     .filter((region) => regionId === ALL_REGIONS || region.regionId === regionId)
     .map((region) => {
     const regionAssets = selectAssets(data, region.regionId);
-    const priorities = regionAssets.map((asset) => deriveAssetPriority(asset, data));
+    const prioritiesByAssetId = new Map(
+      regionAssets.map((asset) => [asset.assetId, deriveAssetPriority(asset, data)]),
+    );
+    const priorities = [...prioritiesByAssetId.values()];
     const openWorkOrders = selectOpenWorkOrders(data, region.regionId);
     const availableCrews = selectAvailableCrews(data, region.regionId);
     const production = calculateProduction(regionAssets, periodId);
     const criticalAndHighAssetIds = new Set(
-      priorities
-        .filter((priority) => [
+      [...prioritiesByAssetId.entries()]
+        .filter(([, priority]) => [
           PRIORITY_LEVELS.critical,
           PRIORITY_LEVELS.high,
         ].includes(priority.priorityLevel))
-        .map((priority) => priority.assetId),
+        .map(([assetId]) => assetId),
     );
     const criticalHighWork = openWorkOrders.filter((order) => criticalAndHighAssetIds.has(order.assetId)).length;
     const hasCritical = priorities.some((priority) => priority.priorityLevel === PRIORITY_LEVELS.critical);
@@ -467,15 +473,18 @@ export function selectOverview(data = overviewData, regionId = ALL_REGIONS, peri
   const activeRegion = getActiveRegion(regionId, data);
   const activePeriod = getActivePeriod(periodId);
   const filteredAssets = selectAssets(data, regionId);
-  const priorities = filteredAssets.map((asset) => deriveAssetPriority(asset, data));
+  const prioritiesByAssetId = new Map(
+    filteredAssets.map((asset) => [asset.assetId, deriveAssetPriority(asset, data)]),
+  );
+  const priorities = [...prioritiesByAssetId.values()];
   const openWorkOrders = selectOpenWorkOrders(data, regionId);
   const highCriticalAssetIds = new Set(
-    priorities
-      .filter((priority) => [
+    [...prioritiesByAssetId.entries()]
+      .filter(([, priority]) => [
         PRIORITY_LEVELS.critical,
         PRIORITY_LEVELS.high,
       ].includes(priority.priorityLevel))
-      .map((priority) => priority.assetId),
+      .map(([assetId]) => assetId),
   );
 
   return {

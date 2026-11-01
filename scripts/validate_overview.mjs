@@ -32,6 +32,7 @@ assert.equal(overview.criticalAssets, 2);
 assert.equal(overview.highPriorityAssets, 5);
 assert.equal(overview.assetsRequiringAttention, 9);
 assert.equal(overview.openWorkOrders.length, 16);
+assert.equal(overview.criticalHighWorkOrders, 6);
 assert.equal(overview.availableCrews.length, 5);
 assert.equal(overview.prioritizedAssets[0].assetId, "AST-037");
 assert.equal(selectTotalProduction(), 7155.5);
@@ -58,6 +59,13 @@ for (const [periodId, expected] of Object.entries(periodValues)) {
   assert.equal(result.production, expected.production, `${periodId} production`);
   assert.equal(result.target, expected.target, `${periodId} target`);
   assert.equal(result.attainmentPercent, expected.attainment, `${periodId} attainment`);
+  assert.equal(
+    result.unit,
+    periodId === "today"
+      ? "fictional production units per day"
+      : `fictional production units over ${periodId === "last7Days" ? 7 : 30} days`,
+    `${periodId} production unit`,
+  );
 }
 
 const regionByName = new Map(overviewData.regions.map((region) => [region.name, region.regionId]));
@@ -68,6 +76,9 @@ assert.equal(redMesa.production.target, 1878);
 assert.equal(redMesa.production.attainmentPercent, (1938.6 / 1878) * 100);
 assert.equal(redMesa.criticalAssets, 0);
 assert.equal(redMesa.prioritizedAssets.length, 0);
+assert.equal(redMesa.regionalSummaries.length, 1);
+assert.match(redMesa.changeSummary.headline, /meeting target/);
+assert.equal(redMesa.criticalHighWorkOrders, 0);
 
 const cypressBend = selectOverview(overviewData, regionByName.get("Cypress Bend"));
 assert.equal(cypressBend.totalAssets, 18);
@@ -75,6 +86,11 @@ assert.equal(cypressBend.production.production, 1542.3);
 assert.equal(cypressBend.production.target, 1864);
 assert.equal(cypressBend.criticalAssets, 2);
 assert.equal(cypressBend.highPriorityAssets, 3);
+assert.equal(cypressBend.criticalHighWorkOrders, 5);
+assert.equal(cypressBend.regionalSummaries.length, 1);
+assert.equal(cypressBend.changeSummary.regionId, regionByName.get("Cypress Bend"));
+assert.match(cypressBend.changeSummary.headline, /Cypress Bend/);
+assert.equal(overview.changeSummary.regionId, regionByName.get("Cypress Bend"));
 
 const telemetryAsset = overviewData.assets.find((asset) => asset.telemetryStatus === "unavailable");
 const telemetryPriority = deriveAssetPriority(telemetryAsset);
