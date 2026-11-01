@@ -59,3 +59,10 @@
 - **Unresolved questions:** None.
 - **Next step:** Await the next product instruction.
 - **Validation:** Pending production build/type check, overview selector checks, and browser verification of filters and asset links.
+
+## 2026-11-01 — Local Roboto font availability
+
+- **Session goal:** Ensure the selected Roboto UI typeface is available without relying on a viewer's installed fonts or a remote font service.
+- **Decisions:** Added `@fontsource/roboto` and imported the Latin 400, 500, 600, and 700 weights through `src/main.ts`. Vite emits these font files as local production assets. The existing `Roboto, sans-serif` declaration and typography scale remain unchanged.
+- **Files changed:** `package.json`, `package-lock.json`, `src/main.ts`, `context/DESIGN_DECISIONS.md`, `context/SESSION_LOG.md`.
+- **Validation:** `npm run build` passed the TypeScript check and Vite production build. Application source search found no Open Sans or condensed font references.
