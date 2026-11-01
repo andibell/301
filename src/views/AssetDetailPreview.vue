@@ -22,6 +22,13 @@ const region = computed(
 const priority = computed(
   () => asset.value ? deriveAssetPriority(asset.value) : null,
 );
+const priorityReasons = computed(() => {
+  if (!priority.value || !asset.value) return [];
+  return priority.value.priorityReasons.filter((reason) => !(
+    reason.startsWith("Downtime has lasted")
+    && asset.value?.operatingStatus === "offline"
+  ));
+});
 const workOrder = computed(() => {
   const record = asset.value?.openWorkOrderId
     ? workOrders.find((item) => item.workOrderId === asset.value?.openWorkOrderId)
@@ -141,30 +148,9 @@ function formatStatus(status: string) {
 }
 
 function reasonEvidence(reason: string) {
-  if (!asset.value || !production.value || !inspection.value) return "";
-  const record = asset.value;
-  if (reason.includes("safety risk")) {
-    return `Recorded safety risk: ${formatStatus(record.safetyRiskLevel)}.`;
-  }
-  if (reason.includes("Production is")) {
-    return `Current production is ${formatNumber(production.value.actual)} of ${formatNumber(production.value.target)} units per day.`;
-  }
-  if (reason.includes("offline")) {
-    return `Operating status: ${formatStatus(record.operatingStatus)}; downtime: ${numberFormatter.format(record.downtimeHours)} hours.`;
-  }
-  if (reason.includes("Downtime")) {
-    return `${numberFormatter.format(record.downtimeHours)} hours of current downtime.`;
-  }
-  if (reason.includes("Inspection")) {
-    return `Last inspection: ${dateFormatter.format(inspection.value.lastInspection)}.`;
-  }
+  if (!workOrder.value) return "";
   if (reason.includes("work order")) {
-    return workOrder.value
-      ? `${workOrder.value.workOrderId}, ${workOrder.value.severity} severity, ${workOrder.value.ageHours} hours old.`
-      : "";
-  }
-  if (reason.includes("Telemetry")) {
-    return `Telemetry status: ${formatStatus(record.telemetryStatus)}; current production is not treated as zero.`;
+    return `${workOrder.value.workOrderId} · ${WORK_ORDER_STATUS_LABELS[workOrder.value.status]}.`;
   }
   return "";
 }
@@ -185,6 +171,11 @@ const interventionCue = computed(() => {
       : "This asset has unassigned work, but no eligible crew is currently available.";
   }
   return "No open work currently requires assignment.";
+});
+
+const interventionContext = computed(() => {
+  if (!workOrder.value) return "";
+  return `${workOrder.value.workOrderId} · ${WORK_ORDER_STATUS_LABELS[workOrder.value.status]} · ${formatStatus(workOrder.value.severity)} severity.`;
 });
 
 const statusClass = computed(() => {
@@ -216,6 +207,8 @@ const statusClass = computed(() => {
             {{ formatStatus(asset.operatingStatus) }}
           </span>
           <span class="detail-status" :class="statusClass">{{ asset.priorityLevel }} priority</span>
+        </div>
+        <div v-if="assignedCrew || workOrder" class="detail-assignment-status">
           <span v-if="assignedCrew" class="detail-status detail-status-assigned">
             Assigned to {{ assignedCrew.crewName }}
           </span>
@@ -237,7 +230,7 @@ const statusClass = computed(() => {
           <span class="detail-priority-level" :class="statusClass">{{ asset.priorityLevel }}</span>
         </div>
         <ul class="priority-reasons">
-          <li v-for="reason in priority.priorityReasons" :key="reason">
+          <li v-for="reason in priorityReasons" :key="reason">
             <span class="priority-reason-text">
               {{ reason === "No current priority conditions met." ? "No current priority conditions." : reason }}
             </span>
@@ -257,7 +250,7 @@ const statusClass = computed(() => {
           </span>
         </div>
         <p v-if="asset.telemetryStatus !== 'available'" class="telemetry-warning" role="status">
-          Current telemetry is {{ asset.telemetryStatus }}. Production is unknown, not zero; operating status remains {{ formatStatus(asset.operatingStatus) }}.
+          Production is unknown, not zero; independently recorded operating status remains {{ formatStatus(asset.operatingStatus) }}.
         </p>
         <dl class="evidence-grid">
           <div class="evidence-production">
@@ -274,30 +267,32 @@ const statusClass = computed(() => {
             <dt>Variance</dt>
             <dd>{{ formatVariance(production.difference, production.variancePercent) }}</dd>
           </div>
-          <div class="evidence-trend">
+          <div class="evidence-key">
+            <dt>Downtime</dt>
+            <dd>{{ numberFormatter.format(asset.downtimeHours) }} hours</dd>
+          </div>
+          <div class="evidence-key">
+            <dt>Safety risk</dt>
+            <dd :class="{ 'evidence-critical': asset.safetyRiskLevel === 'critical' }">
+              {{ formatStatus(asset.safetyRiskLevel) }}
+            </dd>
+          </div>
+          <div class="evidence-trend evidence-supporting-field">
             <dt>Recent production trend</dt>
             <dd>
               {{ trend.summary }}
               <span class="evidence-supporting">{{ trend.readings }} of 7 daily readings available</span>
             </dd>
           </div>
-          <div>
-            <dt>Downtime</dt>
-            <dd>{{ numberFormatter.format(asset.downtimeHours) }} hours</dd>
-          </div>
-          <div>
+          <div class="evidence-supporting-field">
             <dt>Equipment health</dt>
             <dd>{{ formatStatus(asset.equipmentHealthStatus) }}</dd>
           </div>
-          <div>
-            <dt>Safety risk</dt>
-            <dd>{{ formatStatus(asset.safetyRiskLevel) }}</dd>
-          </div>
-          <div>
+          <div class="evidence-supporting-field">
             <dt>Last inspection</dt>
             <dd>{{ dateFormatter.format(inspection.lastInspection) }}</dd>
           </div>
-          <div>
+          <div class="evidence-supporting-field">
             <dt>Inspection status</dt>
             <dd :class="{ 'evidence-attention': inspection.overdue }">
               {{ inspection.overdue ? `Overdue by ${inspection.daysOverdue} days` : `Within 30-day interval · due ${dateFormatter.format(inspection.dueDate)}` }}
@@ -315,15 +310,15 @@ const statusClass = computed(() => {
         </div>
         <template v-if="workOrder">
           <dl class="work-order-grid">
-            <div><dt>Work order</dt><dd>{{ workOrder.workOrderId }}</dd></div>
-            <div><dt>Category</dt><dd>{{ formatStatus(workOrder.category) }}</dd></div>
-            <div><dt>Severity</dt><dd :class="{ 'evidence-critical': workOrder.severity === 'critical' }">{{ formatStatus(workOrder.severity) }}</dd></div>
-            <div><dt>Status</dt><dd>{{ WORK_ORDER_STATUS_LABELS[workOrder.status] }}</dd></div>
-            <div><dt>Opened</dt><dd>{{ dateTimeFormatter.format(new Date(workOrder.openedAt)) }} UTC</dd></div>
-            <div><dt>Age</dt><dd>{{ workOrder.ageHours }} hours</dd></div>
-            <div><dt>Required skill</dt><dd>{{ formatStatus(workOrder.requiredSkill) }}</dd></div>
-            <div><dt>Estimated duration</dt><dd>{{ numberFormatter.format(workOrder.estimatedDurationHours) }} hours</dd></div>
-            <div v-if="assignedCrew"><dt>Assigned crew</dt><dd>{{ assignedCrew.crewName }}</dd></div>
+            <div class="work-order-primary"><dt>Status</dt><dd>{{ WORK_ORDER_STATUS_LABELS[workOrder.status] }}</dd></div>
+            <div class="work-order-primary"><dt>Severity</dt><dd :class="{ 'evidence-critical': workOrder.severity === 'critical' }">{{ formatStatus(workOrder.severity) }}</dd></div>
+            <div v-if="assignedCrew" class="work-order-primary"><dt>Assigned crew</dt><dd>{{ assignedCrew.crewName }}</dd></div>
+            <div class="work-order-primary"><dt>Required skill</dt><dd>{{ formatStatus(workOrder.requiredSkill) }}</dd></div>
+            <div class="work-order-secondary"><dt>Work order</dt><dd>{{ workOrder.workOrderId }}</dd></div>
+            <div class="work-order-secondary"><dt>Category</dt><dd>{{ formatStatus(workOrder.category) }}</dd></div>
+            <div class="work-order-secondary"><dt>Opened</dt><dd>{{ dateTimeFormatter.format(new Date(workOrder.openedAt)) }} UTC</dd></div>
+            <div class="work-order-secondary"><dt>Age</dt><dd>{{ workOrder.ageHours }} hours</dd></div>
+            <div class="work-order-secondary"><dt>Estimated duration</dt><dd>{{ numberFormatter.format(workOrder.estimatedDurationHours) }} hours</dd></div>
           </dl>
           <div v-if="!assignedCrew && eligibleCrews.length > 0" class="eligible-crew">
             <h3>Eligible available crew</h3>
@@ -343,7 +338,10 @@ const statusClass = computed(() => {
           <p class="eyebrow">Management intervention</p>
           <h2 id="intervention-heading">Decision status</h2>
         </div>
-        <p>{{ interventionCue }}</p>
+        <div class="intervention-current">
+          <p>{{ interventionCue }}</p>
+          <p v-if="interventionContext" class="intervention-context">{{ interventionContext }}</p>
+        </div>
         <span class="intervention-next-step">
           {{ workOrder && !assignedCrew ? "Appropriate next action: assign an eligible crew." : assignedCrew ? "No assignment action is currently required." : "Review condition and priority evidence; no assignment action is available." }}
         </span>

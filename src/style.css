@@ -1090,10 +1090,14 @@ p {
 .detail-identity {
   padding: 0 0 12px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: 8px 24px;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  gap: 6px;
   border-bottom: 1px solid var(--color-border-strong);
+}
+
+.detail-identity-heading {
+  min-width: 0;
 }
 
 .detail-identity .eyebrow {
@@ -1120,14 +1124,19 @@ p {
 .detail-statuses {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  gap: 6px;
+}
+
+.detail-assignment-status {
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
 .detail-status,
 .detail-priority-level {
   width: fit-content;
-  padding: 4px 8px;
+  padding: 3px 7px;
   display: inline-flex;
   align-items: center;
   color: var(--color-text-secondary);
@@ -1171,7 +1180,6 @@ p {
 }
 
 .detail-as-of {
-  grid-column: 1 / -1;
   color: var(--color-text-muted);
   font-size: var(--type-caption);
 }
@@ -1253,7 +1261,7 @@ p {
   padding: 4px 8px;
   color: var(--color-status-stable);
   background: var(--color-status-stable-surface);
-  font-size: var(--type-caption);
+  font-size: var(--type-body-supporting);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -1311,6 +1319,19 @@ p {
   grid-column: span 2;
 }
 
+.evidence-production dd {
+  font-size: var(--type-body);
+}
+
+.evidence-key dd {
+  font-size: var(--type-body);
+}
+
+.evidence-supporting-field dt,
+.evidence-supporting-field dd {
+  color: var(--color-text-secondary);
+}
+
 .evidence-unit,
 .evidence-supporting {
   margin-left: 5px;
@@ -1338,6 +1359,19 @@ p {
 
 .work-order-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.work-order-primary dd {
+  font-size: var(--type-body);
+}
+
+.work-order-secondary dt,
+.work-order-secondary dd {
+  color: var(--color-text-secondary);
+}
+
+.work-order-secondary dd {
+  font-weight: 500;
 }
 
 .eligible-crew {
@@ -1397,6 +1431,11 @@ p {
   border-left: 3px solid var(--color-operational-blue);
 }
 
+.intervention-current {
+  display: grid;
+  gap: 4px;
+}
+
 .intervention-section .eyebrow {
   margin-bottom: 3px;
   color: var(--color-operational-blue);
@@ -1408,6 +1447,12 @@ p {
   font-size: var(--type-body-supporting);
   font-weight: 600;
   line-height: 1.45;
+}
+
+.intervention-section .intervention-context {
+  color: var(--color-text-secondary);
+  font-size: var(--type-caption);
+  font-weight: 500;
 }
 
 .intervention-next-step {
@@ -1431,9 +1476,16 @@ p {
 }
 
 .event-item time {
+  padding-top: 1px;
   color: var(--color-text-muted);
   font-size: var(--type-caption);
   font-variant-numeric: tabular-nums;
+}
+
+.event-item > div {
+  min-width: 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--color-border);
 }
 
 .event-item p {

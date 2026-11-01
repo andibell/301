@@ -80,3 +80,10 @@
 - **Decisions:** Read the route asset ID from the local fixture; show condition, priority reasons, evidence, active work and crew, a state-based intervention cue, and chronological asset events. Derive inspection status from the established 30-day rule, use textual trend context, and represent unavailable telemetry as unknown production without changing operating status. Keep assignment and acknowledgement out of scope for this increment.
 - **Files changed:** `src/views/AssetDetailPreview.vue`, `src/style.css`, `src/domain/overview.d.mts`, `context/DESIGN_DECISIONS.md`, `context/SESSION_LOG.md`.
 - **Validation:** Synthetic-data validation, overview-selector validation, TypeScript/type check, and production build passed. Browser checks passed for AST-039, AST-037, AST-026, AST-002, and an invalid asset ID; the Overview route remains populated with all nine initial priority rows. Asset detail had no page-level horizontal overflow at 320, 375, or 390 px, and the browser reported no page errors.
+
+## 2026-11-01 — Asset Detail UX refinement
+
+- **Session goal:** Improve Asset Detail scanability and reduce repeated priority evidence before implementing management actions.
+- **Changes:** Present the asset header in the requested identity-to-status-to-snapshot order; omit duplicate offline/downtime and repeat supporting facts from the priority list; emphasize production, downtime, safety, and telemetry while visually subordinating trend, health, and inspection; lead work-order details with status, severity, crew, and skill; add concise assigned-work context to the intervention area; and distinguish event time, summary, and related work.
+- **Files changed:** `src/views/AssetDetailPreview.vue`, `src/style.css`, `context/SESSION_LOG.md`.
+- **Validation:** Synthetic-data validation, overview-selector validation, TypeScript/type check, and production build passed. Browser checks confirmed layout and content for AST-037, AST-039, AST-026, and AST-002; no management action controls were present.
