@@ -71,6 +71,8 @@ export interface OverviewResult {
 }
 
 export const ALL_REGIONS: "all";
+export const OPEN_WORK_ORDER_STATUSES: Set<string>;
+export const WORK_ORDER_STATUS_LABELS: Record<string, string>;
 export const overviewData: {
   metadata: { asOfTimestamp: string; productionUnit: string };
   regions: Array<{ regionId: string; name: string }>;
