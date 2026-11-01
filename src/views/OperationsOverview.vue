@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { RouterLink } from "vue-router";
+import { computed, watch } from "vue";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import {
   ALL_REGIONS,
   PERIODS,
@@ -8,8 +8,65 @@ import {
   selectOverview,
 } from "../domain/overview.mjs";
 
-const activeRegionId = ref<string>(ALL_REGIONS);
-const activePeriodId = ref<"today" | "last7Days" | "last30Days">("today");
+type PeriodId = keyof typeof PERIODS;
+
+const route = useRoute();
+const router = useRouter();
+
+function regionFromQuery(value: unknown): string {
+  return typeof value === "string"
+    && overviewData.regions.some((region) => region.regionId === value)
+    ? value
+    : ALL_REGIONS;
+}
+
+function periodFromQuery(value: unknown): PeriodId {
+  if (value === "7d") return "last7Days";
+  if (value === "30d") return "last30Days";
+  return "today";
+}
+
+function queryForFilters(regionId: string, periodId: PeriodId) {
+  const query = { ...route.query };
+  if (regionId === ALL_REGIONS) {
+    delete query.region;
+  } else {
+    query.region = regionId;
+  }
+  if (periodId === "today") {
+    delete query.period;
+  } else {
+    query.period = periodId === "last7Days" ? "7d" : "30d";
+  }
+  return query;
+}
+
+watch(
+  () => route.query,
+  (query) => {
+    const regionId = regionFromQuery(query.region);
+    const periodId = periodFromQuery(query.period);
+    const normalizedQuery = queryForFilters(regionId, periodId);
+    if (JSON.stringify(normalizedQuery) !== JSON.stringify(query)) {
+      void router.replace({ query: normalizedQuery });
+    }
+  },
+  { immediate: true },
+);
+
+const activeRegionId = computed({
+  get: () => regionFromQuery(route.query.region),
+  set: (regionId: string) => {
+    void router.push({ query: queryForFilters(regionId, activePeriodId.value) });
+  },
+});
+
+const activePeriodId = computed<PeriodId>({
+  get: () => periodFromQuery(route.query.period),
+  set: (periodId) => {
+    void router.push({ query: queryForFilters(activeRegionId.value, periodId) });
+  },
+});
 
 const overview = computed(() => selectOverview(
   overviewData,
@@ -75,8 +132,7 @@ const formatVariance = (value: number | null) => {
 };
 
 function resetFilters() {
-  activeRegionId.value = ALL_REGIONS;
-  activePeriodId.value = "today";
+  void router.push({ query: queryForFilters(ALL_REGIONS, "today") });
 }
 </script>
 

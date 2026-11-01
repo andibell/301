@@ -1577,7 +1577,7 @@ p {
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 1080px) {
   .table-wrap {
     overflow: visible;
     border: 0;
@@ -1652,8 +1652,14 @@ p {
     color: var(--muted);
   }
 
+  .priority-table td:nth-child(5) {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
   .priority-table .reason-cell {
     grid-column: 1 / -1;
+    grid-row: 3;
     max-width: none;
     padding-top: 8px;
     color: var(--color-text-secondary);
@@ -1668,6 +1674,7 @@ p {
 
   .priority-table .detail-cell {
     grid-column: 2;
+    grid-row: 4;
     justify-self: end;
   }
 }
