@@ -35,19 +35,18 @@
   --color-status-information-surface: #eaf1f7;
   --color-status-disabled: #536273;
   --color-status-disabled-surface: #f4f6f7;
-  --font-ui: Roboto, "Segoe UI", Arial, sans-serif;
-  --font-operational: "Open Sans Hebrew Condensed", "Roboto Condensed", "Arial Narrow", Roboto, sans-serif;
-  --type-page-title: clamp(26px, 3vw, 34px);
+  --font-ui: Roboto, sans-serif;
+  --type-page-title: clamp(28px, 3vw, 30px);
   --type-section-title: 19px;
-  --type-operational-label: 10px;
-  --type-kpi-value: clamp(34px, 4vw, 48px);
-  --type-kpi-context: 11px;
-  --type-body: 14px;
-  --type-body-supporting: 11px;
-  --type-table-header: 10px;
-  --type-table-value: 11px;
-  --type-button: 12px;
-  --type-caption: 10px;
+  --type-operational-label: 11px;
+  --type-kpi-value: clamp(28px, 4vw, 40px);
+  --type-kpi-context: 12px;
+  --type-body: 15px;
+  --type-body-supporting: 13px;
+  --type-table-header: 11px;
+  --type-table-value: 12px;
+  --type-button: 13px;
+  --type-caption: 12px;
   font-family: var(--font-ui);
   color: var(--color-text-primary);
   background: var(--color-surface-cloud);
@@ -75,7 +74,6 @@
   --color-surface-blue-active: #d7e5f1;
   --color-status-information-subtle: #e7eef1;
   --color-surface-row-hover: #f8fafb;
-  --mono: var(--font-ui);
 }
 
 * {
@@ -150,37 +148,17 @@ summary:focus-visible,
   text-decoration: none;
 }
 
-.brand-mark {
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  color: var(--color-text-on-dark);
-  border: 1px solid rgb(255 255 255 / 48%);
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: -0.08em;
-}
-
-.brand-copy {
-  display: grid;
-  gap: 2px;
-}
-
-.company-name {
-  color: var(--color-text-on-dark-secondary);
-  font-family: var(--font-operational);
-  font-size: var(--type-operational-label);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.brand-logo {
+  width: 136px;
+  height: auto;
+  display: block;
 }
 
 .product-name {
   font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 .topbar-context {
@@ -189,17 +167,6 @@ summary:focus-visible,
   gap: 20px;
   color: var(--color-text-on-dark-secondary);
   font-size: 12px;
-}
-
-.environment-label {
-  padding: 5px 8px;
-  border: 1px solid rgb(255 255 255 / 38%);
-  color: var(--color-text-on-dark);
-  font-family: var(--font-operational);
-  font-size: var(--type-operational-label);
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
 }
 
 .main-content {
@@ -229,7 +196,7 @@ summary:focus-visible,
 .eyebrow {
   margin: 0 0 7px;
   color: var(--blue);
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-operational-label);
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -267,7 +234,7 @@ p {
   align-items: center;
   gap: 8px;
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--font-ui);
   font-size: var(--type-table-value);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -303,7 +270,7 @@ p {
   display: grid;
   gap: 5px;
   color: var(--muted);
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-operational-label);
   letter-spacing: 0.03em;
   font-weight: 600;
@@ -393,7 +360,7 @@ p {
 
 .section-context {
   color: var(--muted);
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-operational-label);
   letter-spacing: 0.025em;
   text-align: right;
@@ -425,13 +392,13 @@ p {
 .metric-kicker,
 .data-period {
   color: var(--color-text-on-dark-secondary);
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-kpi-context);
   font-weight: 600;
 }
 
 .data-period {
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-operational-label);
 }
 
@@ -466,7 +433,7 @@ p {
   display: flex;
   gap: 8px;
   color: var(--color-text-on-dark-secondary);
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-caption);
 }
 
@@ -533,7 +500,7 @@ p {
 
 .supporting-label {
   color: var(--color-text-secondary);
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-operational-label);
   letter-spacing: 0.025em;
   font-weight: 600;
@@ -669,7 +636,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-operational-label);
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -777,7 +744,7 @@ p {
   padding: 5px 8px;
   color: var(--color-text-secondary);
   background: var(--color-status-information-subtle);
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-caption);
   white-space: nowrap;
 }
@@ -808,7 +775,7 @@ p {
 }
 
 .priority-table thead th {
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-table-header);
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -860,7 +827,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--font-operational);
+  font-family: var(--font-ui);
   font-size: var(--type-operational-label);
   font-weight: 600;
   white-space: nowrap;
@@ -1292,11 +1259,6 @@ p {
     flex-direction: column;
     gap: 5px;
     font-size: 10px;
-  }
-
-  .environment-label {
-    padding: 3px 5px;
-    font-size: 8px;
   }
 
   .main-content {

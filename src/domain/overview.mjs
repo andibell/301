@@ -410,7 +410,7 @@ export function selectChangeSummary(data = overviewData, regionId = ALL_REGIONS,
     const gapContext = largestGap.complete ? "" : " from available readings";
     return {
       headline: `${largestGap.name} has the largest production gap`,
-      detail: `${gap.toLocaleString("en-US")} fictional units below target${gapContext} for ${getActivePeriod(periodId).label.toLowerCase()}.`,
+      detail: `${gap.toLocaleString("en-US")} units below target${gapContext} for ${getActivePeriod(periodId).label.toLowerCase()}.`,
       regionId: largestGap.regionId,
       productionGap: gap,
       priorityContext: mostImportantAsset

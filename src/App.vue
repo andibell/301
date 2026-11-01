@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import { overviewData } from "./domain/overview.mjs";
+import terraValeLogo from "./assets/terraval-energy-logo.png";
 
 const operationalDate = new Intl.DateTimeFormat("en-US", {
   dateStyle: "full",
@@ -13,14 +14,12 @@ const operationalDate = new Intl.DateTimeFormat("en-US", {
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="topbar">
       <RouterLink class="brand-lockup" to="/" aria-label="FieldOps Command Operations Overview">
-        <span class="brand-mark" aria-hidden="true">TV</span>
+        <img class="brand-logo" :src="terraValeLogo" alt="TerraVale Energy" />
         <span class="brand-copy">
-          <span class="company-name">TerraVale Energy</span>
           <span class="product-name">FieldOps Command</span>
         </span>
       </RouterLink>
       <div class="topbar-context">
-        <span class="environment-label">Fictional operations</span>
         <time :datetime="overviewData.metadata.asOfTimestamp">{{ operationalDate }}</time>
       </div>
     </header>
@@ -29,7 +28,6 @@ const operationalDate = new Intl.DateTimeFormat("en-US", {
     </main>
     <footer class="app-footer">
       <span>FieldOps Command</span>
-      <span>All operational records shown are synthetic.</span>
     </footer>
   </div>
 </template>

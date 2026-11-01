@@ -147,7 +147,7 @@ function resetFilters() {
           <div class="production-caption">
             <span>Actual</span>
             <span>Target</span>
-            <span>{{ overview.production.unit }}</span>
+            <span>{{ overview.production.unit.replace("fictional ", "") }}</span>
           </div>
           <p class="attainment-line">
             <strong>{{ formatPercent(overview.production.attainmentPercent) }}</strong>

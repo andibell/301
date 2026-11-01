@@ -41,7 +41,7 @@ const openWorkOrder = computed(
     <div v-else class="empty-state">
       <div>
         <h2 id="asset-preview-title">Asset not found</h2>
-        <p>No fictional asset matches {{ assetId }}.</p>
+        <p>No asset matches {{ assetId }}.</p>
       </div>
     </div>
   </section>
