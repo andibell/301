@@ -157,8 +157,11 @@ function resetFilters() {
             <span>{{ overview.production.unit.replace("fictional ", "") }}</span>
           </div>
           <p class="attainment-line">
-            <strong>{{ formatPercent(overview.production.attainmentPercent) }}</strong>
-            <span>of target</span>
+            <template v-if="overview.production.attainmentPercent !== null">
+              <strong>{{ formatPercent(overview.production.attainmentPercent) }}</strong>
+              <span>of target</span>
+            </template>
+            <strong v-else>Attainment unavailable</strong>
           </p>
           <p v-if="!overview.production.complete" class="data-quality-note" role="status">
             Production total is incomplete: {{ overview.production.missingSamples }} reading
@@ -172,24 +175,24 @@ function resetFilters() {
 
         <div class="supporting-metrics" aria-label="Supporting operating metrics">
           <article class="supporting-metric">
-            <span class="supporting-label">Assets needing attention</span>
             <strong>{{ overview.assetsRequiringAttention }}</strong>
+            <span class="supporting-label">Assets needing attention</span>
             <span class="supporting-detail">
               {{ overview.criticalAssets }} critical · {{ overview.highPriorityAssets }} high
             </span>
           </article>
           <article class="supporting-metric">
-            <span class="supporting-label">Assets offline</span>
             <strong>{{ overview.offlineAssets }}</strong>
+            <span class="supporting-label">Assets offline</span>
             <span class="supporting-detail">of {{ overview.totalAssets }} assets</span>
           </article>
           <article class="supporting-metric">
-            <span class="supporting-label">Open critical / high work</span>
             <strong>{{ overview.criticalHighWorkOrders }}</strong>
+            <span class="supporting-label">Open critical / high work</span>
           </article>
           <article class="supporting-metric">
-            <span class="supporting-label">Available crew capacity</span>
             <strong>{{ overview.availableCrews.length }}</strong>
+            <span class="supporting-label">Available crew capacity</span>
             <span class="supporting-detail">eligible for new work</span>
           </article>
         </div>
