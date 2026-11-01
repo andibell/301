@@ -1,0 +1,18 @@
+[
+  {
+    "regionId": "RGN-01",
+    "name": "Red Mesa"
+  },
+  {
+    "regionId": "RGN-02",
+    "name": "North Ridge"
+  },
+  {
+    "regionId": "RGN-03",
+    "name": "Cypress Bend"
+  },
+  {
+    "regionId": "RGN-04",
+    "name": "Lone Prairie"
+  }
+]

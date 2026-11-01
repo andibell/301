@@ -1,0 +1,317 @@
+[
+  {
+    "eventId": "EVT-001",
+    "assetId": "AST-066",
+    "workOrderId": "WO-020",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-26T13:59:59Z",
+    "summary": "Environmental work order opened."
+  },
+  {
+    "eventId": "EVT-002",
+    "assetId": "AST-025",
+    "workOrderId": "WO-009",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-27T09:59:59Z",
+    "summary": "Inspection work order opened for routine follow-up."
+  },
+  {
+    "eventId": "EVT-003",
+    "assetId": "AST-025",
+    "workOrderId": "WO-009",
+    "crewId": null,
+    "eventType": "inspectionCompleted",
+    "occurredAt": "2026-10-28T03:59:59Z",
+    "summary": "Inspection was completed and the recorded condition was reviewed."
+  },
+  {
+    "eventId": "EVT-004",
+    "assetId": "AST-005",
+    "workOrderId": "WO-011",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-28T05:59:59Z",
+    "summary": "Mechanical work order opened."
+  },
+  {
+    "eventId": "EVT-005",
+    "assetId": "AST-025",
+    "workOrderId": "WO-009",
+    "crewId": null,
+    "eventType": "assetReturnedToService",
+    "occurredAt": "2026-10-28T05:59:59Z",
+    "summary": "Asset returned to service after inspection close-out."
+  },
+  {
+    "eventId": "EVT-006",
+    "assetId": "AST-060",
+    "workOrderId": "WO-015",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-28T15:59:59Z",
+    "summary": "Inspection work order opened."
+  },
+  {
+    "eventId": "EVT-007",
+    "assetId": "AST-040",
+    "workOrderId": "WO-004",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-28T23:59:59Z",
+    "summary": "Instrumentation work order opened."
+  },
+  {
+    "eventId": "EVT-008",
+    "assetId": "AST-037",
+    "workOrderId": "WO-001",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-29T01:59:59Z",
+    "summary": "Safety work order opened."
+  },
+  {
+    "eventId": "EVT-009",
+    "assetId": "AST-037",
+    "workOrderId": "WO-001",
+    "crewId": "CRW-06",
+    "eventType": "crewAssigned",
+    "occurredAt": "2026-10-29T02:59:59Z",
+    "summary": "Bend Foundry assigned to the work."
+  },
+  {
+    "eventId": "EVT-010",
+    "assetId": "AST-037",
+    "workOrderId": "WO-001",
+    "crewId": "CRW-06",
+    "eventType": "workAcknowledged",
+    "occurredAt": "2026-10-29T03:59:59Z",
+    "summary": "Work was acknowledged for follow-up."
+  },
+  {
+    "eventId": "EVT-011",
+    "assetId": "AST-039",
+    "workOrderId": "WO-003",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-29T11:59:59Z",
+    "summary": "Electrical work order opened."
+  },
+  {
+    "eventId": "EVT-012",
+    "assetId": "AST-039",
+    "workOrderId": "WO-003",
+    "crewId": null,
+    "eventType": "workAcknowledged",
+    "occurredAt": "2026-10-29T13:59:59Z",
+    "summary": "Work was acknowledged for follow-up."
+  },
+  {
+    "eventId": "EVT-013",
+    "assetId": "AST-020",
+    "workOrderId": "WO-007",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-29T17:59:59Z",
+    "summary": "Mechanical work order opened."
+  },
+  {
+    "eventId": "EVT-014",
+    "assetId": "AST-020",
+    "workOrderId": "WO-007",
+    "crewId": "CRW-04",
+    "eventType": "crewAssigned",
+    "occurredAt": "2026-10-29T18:59:59Z",
+    "summary": "Ridge Circuit assigned to the work."
+  },
+  {
+    "eventId": "EVT-015",
+    "assetId": "AST-020",
+    "workOrderId": "WO-007",
+    "crewId": "CRW-04",
+    "eventType": "workAcknowledged",
+    "occurredAt": "2026-10-29T19:59:59Z",
+    "summary": "Work was acknowledged for follow-up."
+  },
+  {
+    "eventId": "EVT-016",
+    "assetId": "AST-028",
+    "workOrderId": "WO-018",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-30T03:59:59Z",
+    "summary": "Electrical work order opened."
+  },
+  {
+    "eventId": "EVT-017",
+    "assetId": "AST-028",
+    "workOrderId": "WO-018",
+    "crewId": null,
+    "eventType": "workAcknowledged",
+    "occurredAt": "2026-10-30T05:59:59Z",
+    "summary": "Work was acknowledged for follow-up."
+  },
+  {
+    "eventId": "EVT-018",
+    "assetId": "AST-044",
+    "workOrderId": "WO-006",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-30T11:59:59Z",
+    "summary": "Inspection work order opened."
+  },
+  {
+    "eventId": "EVT-019",
+    "assetId": "AST-044",
+    "workOrderId": "WO-006",
+    "crewId": null,
+    "eventType": "workAcknowledged",
+    "occurredAt": "2026-10-30T13:59:59Z",
+    "summary": "Work was acknowledged for follow-up."
+  },
+  {
+    "eventId": "EVT-020",
+    "assetId": "AST-037",
+    "workOrderId": "WO-001",
+    "crewId": null,
+    "eventType": "shutdown",
+    "occurredAt": "2026-10-30T16:59:59Z",
+    "summary": "Production stopped; the asset remains offline."
+  },
+  {
+    "eventId": "EVT-021",
+    "assetId": "AST-057",
+    "workOrderId": "WO-013",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-30T17:59:59Z",
+    "summary": "Environmental work order opened."
+  },
+  {
+    "eventId": "EVT-022",
+    "assetId": "AST-057",
+    "workOrderId": "WO-013",
+    "crewId": "CRW-09",
+    "eventType": "crewAssigned",
+    "occurredAt": "2026-10-30T18:59:59Z",
+    "summary": "Prairie Gauge assigned to the work."
+  },
+  {
+    "eventId": "EVT-023",
+    "assetId": "AST-008",
+    "workOrderId": "WO-012",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-30T23:59:59Z",
+    "summary": "Instrumentation work order opened."
+  },
+  {
+    "eventId": "EVT-024",
+    "assetId": "AST-041",
+    "workOrderId": "WO-005",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-31T03:59:59Z",
+    "summary": "Safety work order opened."
+  },
+  {
+    "eventId": "EVT-025",
+    "assetId": "AST-061",
+    "workOrderId": "WO-016",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-31T03:59:59Z",
+    "summary": "Instrumentation work order opened."
+  },
+  {
+    "eventId": "EVT-026",
+    "assetId": "AST-001",
+    "workOrderId": "WO-010",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-31T05:59:59Z",
+    "summary": "Inspection work order opened."
+  },
+  {
+    "eventId": "EVT-027",
+    "assetId": "AST-022",
+    "workOrderId": "WO-008",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-31T07:59:59Z",
+    "summary": "Environmental work order opened."
+  },
+  {
+    "eventId": "EVT-028",
+    "assetId": "AST-001",
+    "workOrderId": "WO-010",
+    "crewId": null,
+    "eventType": "workAcknowledged",
+    "occurredAt": "2026-10-31T07:59:59Z",
+    "summary": "Work was acknowledged for follow-up."
+  },
+  {
+    "eventId": "EVT-029",
+    "assetId": "AST-050",
+    "workOrderId": "WO-019",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-31T08:59:59Z",
+    "summary": "Mechanical work order opened."
+  },
+  {
+    "eventId": "EVT-030",
+    "assetId": "AST-050",
+    "workOrderId": "WO-019",
+    "crewId": null,
+    "eventType": "workAcknowledged",
+    "occurredAt": "2026-10-31T10:59:59Z",
+    "summary": "Work was acknowledged for follow-up."
+  },
+  {
+    "eventId": "EVT-031",
+    "assetId": "AST-058",
+    "workOrderId": "WO-014",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-31T11:59:59Z",
+    "summary": "Mechanical work order opened."
+  },
+  {
+    "eventId": "EVT-032",
+    "assetId": "AST-038",
+    "workOrderId": "WO-002",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-31T15:59:59Z",
+    "summary": "Mechanical work order opened."
+  },
+  {
+    "eventId": "EVT-033",
+    "assetId": "AST-013",
+    "workOrderId": "WO-017",
+    "crewId": null,
+    "eventType": "workOrderOpened",
+    "occurredAt": "2026-10-31T16:59:59Z",
+    "summary": "Electrical work order opened."
+  },
+  {
+    "eventId": "EVT-034",
+    "assetId": "AST-038",
+    "workOrderId": "WO-002",
+    "crewId": null,
+    "eventType": "productionDeviation",
+    "occurredAt": "2026-10-31T18:59:59Z",
+    "summary": "Daily production fell below the fictional target."
+  },
+  {
+    "eventId": "EVT-035",
+    "assetId": "AST-026",
+    "workOrderId": null,
+    "crewId": null,
+    "eventType": "telemetryLoss",
+    "occurredAt": "2026-10-31T21:59:59Z",
+    "summary": "Current telemetry feed became unavailable; production is unknown."
+  }
+]

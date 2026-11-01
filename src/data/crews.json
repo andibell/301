@@ -1,0 +1,125 @@
+[
+  {
+    "crewId": "CRW-01",
+    "crewName": "Mesa Relay",
+    "regionId": "RGN-01",
+    "skillTypes": [
+      "safety",
+      "electrical"
+    ],
+    "availability": "unavailable",
+    "currentAssignmentWorkOrderId": null,
+    "capacityStatus": "full"
+  },
+  {
+    "crewId": "CRW-02",
+    "crewName": "Mesa Forge",
+    "regionId": "RGN-01",
+    "skillTypes": [
+      "mechanical",
+      "inspection"
+    ],
+    "availability": "available",
+    "currentAssignmentWorkOrderId": null,
+    "capacityStatus": "available"
+  },
+  {
+    "crewId": "CRW-03",
+    "crewName": "Mesa Signal",
+    "regionId": "RGN-01",
+    "skillTypes": [
+      "electrical",
+      "instrumentation"
+    ],
+    "availability": "available",
+    "currentAssignmentWorkOrderId": null,
+    "capacityStatus": "available"
+  },
+  {
+    "crewId": "CRW-04",
+    "crewName": "Ridge Circuit",
+    "regionId": "RGN-02",
+    "skillTypes": [
+      "mechanical",
+      "environmental"
+    ],
+    "availability": "assigned",
+    "currentAssignmentWorkOrderId": "WO-007",
+    "capacityStatus": "full"
+  },
+  {
+    "crewId": "CRW-05",
+    "crewName": "Ridge Lantern",
+    "regionId": "RGN-02",
+    "skillTypes": [
+      "electrical",
+      "instrumentation",
+      "inspection"
+    ],
+    "availability": "available",
+    "currentAssignmentWorkOrderId": null,
+    "capacityStatus": "available"
+  },
+  {
+    "crewId": "CRW-06",
+    "crewName": "Bend Foundry",
+    "regionId": "RGN-03",
+    "skillTypes": [
+      "safety",
+      "mechanical"
+    ],
+    "availability": "assigned",
+    "currentAssignmentWorkOrderId": "WO-001",
+    "capacityStatus": "full"
+  },
+  {
+    "crewId": "CRW-07",
+    "crewName": "Bend Current",
+    "regionId": "RGN-03",
+    "skillTypes": [
+      "mechanical",
+      "electrical",
+      "inspection"
+    ],
+    "availability": "available",
+    "currentAssignmentWorkOrderId": null,
+    "capacityStatus": "available"
+  },
+  {
+    "crewId": "CRW-08",
+    "crewName": "Bend Canopy",
+    "regionId": "RGN-03",
+    "skillTypes": [
+      "environmental",
+      "safety"
+    ],
+    "availability": "unavailable",
+    "currentAssignmentWorkOrderId": null,
+    "capacityStatus": "full"
+  },
+  {
+    "crewId": "CRW-09",
+    "crewName": "Prairie Gauge",
+    "regionId": "RGN-04",
+    "skillTypes": [
+      "environmental",
+      "instrumentation"
+    ],
+    "availability": "assigned",
+    "currentAssignmentWorkOrderId": "WO-013",
+    "capacityStatus": "full"
+  },
+  {
+    "crewId": "CRW-10",
+    "crewName": "Prairie Weld",
+    "regionId": "RGN-04",
+    "skillTypes": [
+      "mechanical",
+      "instrumentation",
+      "inspection"
+    ],
+    "availability": "available",
+    "currentAssignmentWorkOrderId": null,
+    "capacityStatus": "limited"
+  }
+]
