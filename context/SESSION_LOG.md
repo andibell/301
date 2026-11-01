@@ -23,3 +23,12 @@
 - **Files changed:** `src/data/metadata.json`, `src/data/regions.json`, `src/data/assets.json`, `src/data/workOrders.json`, `src/data/crews.json`, `src/data/events.json`, `scripts/validate_synthetic_data.py`, `context/SESSION_LOG.md`.
 - **Unresolved questions:** None for the approved synthetic fixture. The data has not been connected to the application UI.
 - **Next step:** Review the generated fixture and validation summary. Connect it to the UI only in a separately approved implementation step.
+
+## 2026-11-01 — Operations Overview data selectors
+
+- **Session goal:** Add a reusable transformation layer that computes overview values from the local synthetic records and verify the calculations without introducing visual styling.
+- **Decisions:** Added framework-neutral ES module selectors in `src/domain/overview.mjs`; period windows are fixed by dataset metadata. Priority is recalculated from one centralized set of thresholds and status constants. Totals report known production and a completeness flag; attainment is `null` when the selected data window contains missing samples. Attention includes Critical, High, and Moderate assets. Regional comparisons remain available across all regions while selected overview values filter to the active region.
+- **Files changed:** `src/domain/overview.mjs`, `scripts/validate_overview.mjs`, `context/SESSION_LOG.md`.
+- **Unresolved questions:** No Vue application or overview component exists yet, so visual/component wiring is deferred. Selectors consume the local JSON and the deterministic validation script verifies overview-ready values.
+- **Next step:** When the approved Vue application exists, consume `selectOverview` and the individual selectors in its overview composable or page; keep business calculations out of the template.
+- **Validation:** `node scripts/validate_overview.mjs` passed selector, priority-reconciliation, period, region, empty-result, and incomplete-telemetry checks. `python3 scripts/validate_synthetic_data.py` passed the dataset integrity checks.
