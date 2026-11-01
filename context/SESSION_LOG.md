@@ -66,3 +66,10 @@
 - **Decisions:** Added `@fontsource/roboto` and imported the Latin 400, 500, 600, and 700 weights through `src/main.ts`. Vite emits these font files as local production assets. The existing `Roboto, sans-serif` declaration and typography scale remain unchanged.
 - **Files changed:** `package.json`, `package-lock.json`, `src/main.ts`, `context/DESIGN_DECISIONS.md`, `context/SESSION_LOG.md`.
 - **Validation:** `npm run build` passed the TypeScript check and Vite production build. Application source search found no Open Sans or condensed font references.
+
+## 2026-11-01 — Operations Overview UX refinement
+
+- **Session goal:** Improve attention ordering, filter clarity, operating-health balance, intervention visibility, and small-screen accessibility without changing validated data or priority behavior.
+- **Decisions:** Order regional summaries by calculated operational status, priority counts, critical/high work, and offline assets, with region name and ID as deterministic tie-breakers. Hide the filter summary and reset action at default scope; show active filters and a concise polite result-count announcement when scope changes. Reduce production panel dominance, visually qualify incomplete telemetry, tighten spacing, and preserve the existing Overview-only asset route.
+- **Files changed:** `src/domain/overview.mjs`, `src/views/OperationsOverview.vue`, `src/style.css`, `context/DESIGN_DECISIONS.md`, `context/SESSION_LOG.md`.
+- **Validation:** Synthetic-data validation, overview-selector validation, TypeScript/type check, and production build passed. Browser checks confirmed attention-ranked regions, hidden default reset/summary, active-filter summary and reset behavior, accurate polite result announcements, all nine asset links matching their IDs, and no page-level horizontal overflow at 320, 375, or 390 px.

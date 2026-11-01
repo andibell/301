@@ -42,6 +42,13 @@ export const PRIORITY_ORDER = Object.freeze({
   [PRIORITY_LEVELS.stable]: 1,
 });
 
+const OPERATIONAL_STATUS_ORDER = Object.freeze({
+  "Critical attention": 4,
+  "Needs attention": 3,
+  Watch: 2,
+  "On plan": 1,
+});
+
 export const PRIORITY_RULES = Object.freeze({
   criticalSafetyRisk: 8,
   offline: 6,
@@ -386,7 +393,17 @@ export function selectRegionSummaries(
       availableCrews: availableCrews.length,
       operationalStatus,
     };
-  });
+  }).sort((left, right) => (
+    OPERATIONAL_STATUS_ORDER[right.operationalStatus]
+      - OPERATIONAL_STATUS_ORDER[left.operationalStatus]
+    || right.criticalAssets - left.criticalAssets
+    || right.highPriorityAssets - left.highPriorityAssets
+    || right.assetsRequiringAttention - left.assetsRequiringAttention
+    || right.criticalHighWorkOrders - left.criticalHighWorkOrders
+    || right.offlineAssets - left.offlineAssets
+    || left.name.localeCompare(right.name)
+    || left.regionId.localeCompare(right.regionId)
+  ));
 }
 
 export function selectChangeSummary(data = overviewData, regionId = ALL_REGIONS, periodId = "today") {

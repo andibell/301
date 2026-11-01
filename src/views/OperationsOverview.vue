@@ -21,7 +21,7 @@ const hasActiveFilters = computed(
   () => activeRegionId.value !== ALL_REGIONS || activePeriodId.value !== "today",
 );
 
-const filterState = computed(() => {
+const activeFilterSummary = computed(() => {
   const filters = [];
   if (activeRegionId.value !== ALL_REGIONS) {
     filters.push(`Region: ${overview.value.activeRegion.name}`);
@@ -29,7 +29,13 @@ const filterState = computed(() => {
   if (activePeriodId.value !== "today") {
     filters.push(`Period: ${overview.value.activePeriod.label}`);
   }
-  return filters.length > 0 ? filters.join(" · ") : "All regions · Today";
+  return filters.join(" · ");
+});
+
+const filterAnnouncement = computed(() => {
+  const count = overview.value.prioritizedAssets.length;
+  const assetLabel = count === 1 ? "asset" : "assets";
+  return `${count} prioritized ${assetLabel} shown for ${overview.value.activeRegion.name}, ${overview.value.activePeriod.label}.`;
 });
 
 const statusClass = (status: string) => ({
@@ -110,18 +116,19 @@ function resetFilters() {
           </select>
         </label>
       </div>
-      <div class="filter-state" aria-live="polite">
-        <span class="filter-state-label">Showing</span>
-        <span>{{ filterState }}</span>
+      <div v-if="hasActiveFilters" class="filter-state">
+        <span>{{ activeFilterSummary }}</span>
         <button
           class="reset-button"
           type="button"
-          :disabled="!hasActiveFilters"
           @click="resetFilters"
         >
           Reset filters
         </button>
       </div>
+      <p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true">
+        {{ filterAnnouncement }}
+      </p>
     </section>
 
     <section class="health-section" aria-labelledby="health-heading">
@@ -134,7 +141,7 @@ function resetFilters() {
       </div>
 
       <div class="health-layout">
-        <article class="production-panel">
+        <article class="production-panel" :class="{ 'production-panel-incomplete': !overview.production.complete }">
           <div class="production-panel-top">
             <span class="metric-kicker">Production attainment</span>
             <span class="data-period">{{ overview.activePeriod.label }}</span>
@@ -179,12 +186,11 @@ function resetFilters() {
           <article class="supporting-metric">
             <span class="supporting-label">Open critical / high work</span>
             <strong>{{ overview.criticalHighWorkOrders }}</strong>
-            <span class="supporting-detail">orders on Critical or High assets</span>
           </article>
           <article class="supporting-metric">
             <span class="supporting-label">Available crew capacity</span>
             <strong>{{ overview.availableCrews.length }}</strong>
-            <span class="supporting-detail">eligible crews in selected scope</span>
+            <span class="supporting-detail">eligible for new work</span>
           </article>
         </div>
       </div>
@@ -270,7 +276,7 @@ function resetFilters() {
       </div>
     </section>
 
-    <section class="priority-section" aria-labelledby="priority-heading" aria-live="polite">
+    <section class="priority-section" aria-labelledby="priority-heading">
       <div class="section-heading priority-heading-row">
         <div>
           <p class="eyebrow">Intervention queue</p>
@@ -282,7 +288,7 @@ function resetFilters() {
         <span class="queue-count">{{ overview.prioritizedAssets.length }} assets</span>
       </div>
 
-      <div v-if="overview.prioritizedAssets.length === 0" class="empty-state" role="status">
+      <div v-if="overview.prioritizedAssets.length === 0" class="empty-state">
         <span class="empty-state-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" focusable="false">
             <circle cx="12" cy="12" r="9" />
@@ -355,7 +361,7 @@ function resetFilters() {
                   :to="{ name: 'asset-detail', params: { assetId: asset.assetId } }"
                   :aria-label="`View ${asset.assetName} asset detail`"
                 >
-                  View
+                  View details
                   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <path d="M5 12h14m-7-7 7 7-7 7" />
                   </svg>
