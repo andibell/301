@@ -572,13 +572,13 @@ p {
   flex-wrap: wrap;
   gap: 7px 20px;
   color: var(--color-status-attention-secondary);
-  font-size: 10px;
+  font-size: var(--type-body-supporting);
 }
 
 .change-caveat {
   margin: 4px 0 0;
   color: var(--color-status-attention);
-  font-size: 10px;
+  font-size: var(--type-caption);
   white-space: nowrap;
 }
 
@@ -727,7 +727,7 @@ p {
   color: var(--color-status-attention);
   background: var(--color-status-attention-surface);
   border-top: 1px solid var(--color-status-attention-border);
-  font-size: 10px;
+  font-size: var(--type-caption);
 }
 
 .priority-heading-row {
@@ -905,7 +905,7 @@ p {
   color: var(--color-status-attention);
   font-family: var(--font-ui);
   font-variant-numeric: tabular-nums;
-  font-size: 10px;
+  font-size: var(--type-body-supporting);
   white-space: nowrap;
 }
 
@@ -913,7 +913,7 @@ p {
   color: var(--color-status-stable);
   font-family: var(--font-ui);
   font-variant-numeric: tabular-nums;
-  font-size: 10px;
+  font-size: var(--type-body-supporting);
   white-space: nowrap;
 }
 
@@ -983,7 +983,7 @@ p {
 .priority-footnote {
   margin: 8px 0 0;
   color: var(--color-text-muted);
-  font-size: 10px;
+  font-size: var(--type-caption);
 }
 
 .empty-state {
@@ -1055,7 +1055,7 @@ p {
   color: var(--color-text-muted);
   background: var(--color-surface-light);
   border-top: 1px solid var(--color-border);
-  font-size: 10px;
+  font-size: var(--type-caption);
 }
 
 .asset-preview {
@@ -1195,7 +1195,7 @@ p {
     padding: 0;
     display: block;
     border: 0;
-    font-size: 10px;
+    font-size: var(--type-table-value);
   }
 
   .priority-table .asset-cell {
@@ -1258,7 +1258,7 @@ p {
     align-items: flex-end;
     flex-direction: column;
     gap: 5px;
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .main-content {
@@ -1277,7 +1277,7 @@ p {
   }
 
   .as-of {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .filter-bar {
@@ -1318,11 +1318,11 @@ p {
   }
 
   .supporting-label {
-    font-size: 10px;
+    font-size: var(--type-operational-label);
   }
 
   .supporting-detail {
-    font-size: 9px;
+    font-size: var(--type-caption);
   }
 
   .supporting-metric strong {
@@ -1355,7 +1355,7 @@ p {
   }
 
   .region-status {
-    font-size: 9px;
+    font-size: var(--type-operational-label);
   }
 
   .region-performance-label {
@@ -1364,7 +1364,7 @@ p {
   }
 
   .region-stat span {
-    font-size: 9px;
+    font-size: var(--type-operational-label);
   }
 
   .region-name {
