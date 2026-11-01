@@ -69,6 +69,16 @@ export const OPEN_WORK_ORDER_STATUSES = new Set([
   "blocked",
 ]);
 
+export const WORK_ORDER_STATUS_LABELS = Object.freeze({
+  open: "Open",
+  acknowledged: "Acknowledged",
+  assigned: "Assigned",
+  inProgress: "In progress",
+  blocked: "Blocked",
+  completed: "Completed",
+  cancelled: "Cancelled",
+});
+
 function roundProduction(value) {
   return Math.round((value + Number.EPSILON) * 10) / 10;
 }
@@ -321,22 +331,40 @@ export function selectAvailableCrews(data = overviewData, regionId = ALL_REGIONS
   );
 }
 
-export function selectPrioritizedAssets(data = overviewData, regionId = ALL_REGIONS) {
-  return selectAssetsRequiringAttention(data, regionId).sort((left, right) => (
-    PRIORITY_ORDER[right.priorityLevel] - PRIORITY_ORDER[left.priorityLevel]
-    || right.priorityScore - left.priorityScore
-    || left.assetId.localeCompare(right.assetId)
-  ));
-}
-
-export function selectRegionSummaries(data = overviewData, periodId = "today") {
+export function selectRegionSummaries(
+  data = overviewData,
+  periodId = "today",
+  regionId = ALL_REGIONS,
+) {
   getActivePeriod(periodId);
-  return data.regions.map((region) => {
+  assertKnownRegion(regionId, data);
+  return data.regions
+    .filter((region) => regionId === ALL_REGIONS || region.regionId === regionId)
+    .map((region) => {
     const regionAssets = selectAssets(data, region.regionId);
     const priorities = regionAssets.map((asset) => deriveAssetPriority(asset, data));
     const openWorkOrders = selectOpenWorkOrders(data, region.regionId);
     const availableCrews = selectAvailableCrews(data, region.regionId);
     const production = calculateProduction(regionAssets, periodId);
+    const criticalAndHighAssetIds = new Set(
+      priorities
+        .filter((priority) => [
+          PRIORITY_LEVELS.critical,
+          PRIORITY_LEVELS.high,
+        ].includes(priority.priorityLevel))
+        .map((priority) => priority.assetId),
+    );
+    const criticalHighWork = openWorkOrders.filter((order) => criticalAndHighAssetIds.has(order.assetId)).length;
+    const hasCritical = priorities.some((priority) => priority.priorityLevel === PRIORITY_LEVELS.critical);
+    const hasHigh = priorities.some((priority) => priority.priorityLevel === PRIORITY_LEVELS.high);
+    const hasModerate = priorities.some((priority) => priority.priorityLevel === PRIORITY_LEVELS.moderate);
+    const operationalStatus = hasCritical
+      ? "Critical attention"
+      : hasHigh
+        ? "Needs attention"
+        : hasModerate || (production.attainmentPercent !== null && production.attainmentPercent < 100)
+          ? "Watch"
+          : "On plan";
 
     return {
       regionId: region.regionId,
@@ -348,9 +376,91 @@ export function selectRegionSummaries(data = overviewData, periodId = "today") {
       criticalAssets: priorities.filter((priority) => priority.priorityLevel === PRIORITY_LEVELS.critical).length,
       highPriorityAssets: priorities.filter((priority) => priority.priorityLevel === PRIORITY_LEVELS.high).length,
       openWorkOrders: openWorkOrders.length,
+      criticalHighWorkOrders: criticalHighWork,
       availableCrews: availableCrews.length,
+      operationalStatus,
     };
   });
+}
+
+export function selectChangeSummary(data = overviewData, regionId = ALL_REGIONS, periodId = "today") {
+  const summaries = selectRegionSummaries(data, periodId, regionId);
+  const productionGap = (summary) => Math.max(0, summary.target - summary.production);
+  const largestGap = summaries
+    .filter((summary) => productionGap(summary) > 0)
+    .sort((left, right) => productionGap(right) - productionGap(left))[0];
+  const prioritizedAssets = selectPrioritizedAssets(data, regionId, periodId);
+  const criticalCount = prioritizedAssets.filter(
+    (asset) => asset.priorityLevel === PRIORITY_LEVELS.critical,
+  ).length;
+  const highCount = prioritizedAssets.filter(
+    (asset) => asset.priorityLevel === PRIORITY_LEVELS.high,
+  ).length;
+  const mostImportantAsset = prioritizedAssets[0];
+  const hasIncompleteTelemetry = summaries.some((summary) => !summary.complete);
+
+  if (largestGap) {
+    const gap = roundProduction(productionGap(largestGap));
+    const gapContext = largestGap.complete ? "" : " from available readings";
+    return {
+      headline: `${largestGap.name} has the largest production gap`,
+      detail: `${gap.toLocaleString("en-US")} fictional units below target${gapContext} for ${getActivePeriod(periodId).label.toLowerCase()}.`,
+      regionId: largestGap.regionId,
+      productionGap: gap,
+      priorityContext: mostImportantAsset
+        ? `Highest current priority: ${mostImportantAsset.assetName} (${mostImportantAsset.priorityLevel.toLowerCase()}).`
+        : "No assets currently require intervention.",
+      exceptionContext: `${criticalCount} critical and ${highCount} high-priority assets in the selected scope.`,
+      incompleteTelemetry: hasIncompleteTelemetry,
+    };
+  }
+
+  return {
+    headline: mostImportantAsset
+      ? `${mostImportantAsset.regionName} has the highest-priority intervention`
+      : "Production is meeting target across the selected scope",
+    detail: mostImportantAsset
+      ? `${mostImportantAsset.assetName} is ${mostImportantAsset.priorityLevel.toLowerCase()}; ${mostImportantAsset.primaryReason.toLowerCase()}`
+      : "No production shortfall or attention-priority asset is present in this selection.",
+    regionId: mostImportantAsset?.regionId ?? null,
+    productionGap: 0,
+    priorityContext: `${criticalCount} critical and ${highCount} high-priority assets in the selected scope.`,
+    exceptionContext: "No region is currently below its selected-period production target.",
+    incompleteTelemetry: hasIncompleteTelemetry,
+  };
+}
+
+export function selectPrioritizedAssets(data = overviewData, regionId = ALL_REGIONS, periodId = "today") {
+  return selectAssetsRequiringAttention(data, regionId)
+    .map((asset) => {
+      const { production, target, complete } = calculateProduction([asset], periodId);
+      const variancePercent = complete && target > 0
+        ? ((production - target) / target) * 100
+        : null;
+      const workOrder = data.workOrders.find(
+        (order) => order.workOrderId === asset.openWorkOrderId
+          && OPEN_WORK_ORDER_STATUSES.has(order.status),
+      );
+      const region = data.regions.find((item) => item.regionId === asset.regionId);
+      return {
+        ...asset,
+        regionName: region?.name ?? "Unknown region",
+        production,
+        target,
+        productionComplete: complete,
+        variancePercent,
+        workOrderStatus: workOrder
+          ? WORK_ORDER_STATUS_LABELS[workOrder.status]
+          : "No open work",
+        workOrderId: workOrder?.workOrderId ?? null,
+        primaryReason: asset.priorityReasons[0],
+      };
+    })
+    .sort((left, right) => (
+      PRIORITY_ORDER[right.priorityLevel] - PRIORITY_ORDER[left.priorityLevel]
+      || right.priorityScore - left.priorityScore
+      || left.assetId.localeCompare(right.assetId)
+    ));
 }
 
 export function selectOverview(data = overviewData, regionId = ALL_REGIONS, periodId = "today") {
@@ -358,6 +468,15 @@ export function selectOverview(data = overviewData, regionId = ALL_REGIONS, peri
   const activePeriod = getActivePeriod(periodId);
   const filteredAssets = selectAssets(data, regionId);
   const priorities = filteredAssets.map((asset) => deriveAssetPriority(asset, data));
+  const openWorkOrders = selectOpenWorkOrders(data, regionId);
+  const highCriticalAssetIds = new Set(
+    priorities
+      .filter((priority) => [
+        PRIORITY_LEVELS.critical,
+        PRIORITY_LEVELS.high,
+      ].includes(priority.priorityLevel))
+      .map((priority) => priority.assetId),
+  );
 
   return {
     activeRegion,
@@ -368,9 +487,11 @@ export function selectOverview(data = overviewData, regionId = ALL_REGIONS, peri
     assetsRequiringAttention: priorities.filter((priority) => ATTENTION_PRIORITY_LEVELS.includes(priority.priorityLevel)).length,
     criticalAssets: priorities.filter((priority) => priority.priorityLevel === PRIORITY_LEVELS.critical).length,
     highPriorityAssets: priorities.filter((priority) => priority.priorityLevel === PRIORITY_LEVELS.high).length,
-    openWorkOrders: selectOpenWorkOrders(data, regionId),
+    openWorkOrders,
+    criticalHighWorkOrders: openWorkOrders.filter((order) => highCriticalAssetIds.has(order.assetId)).length,
     availableCrews: selectAvailableCrews(data, regionId),
-    regionalSummaries: selectRegionSummaries(data, periodId),
-    prioritizedAssets: selectPrioritizedAssets(data, regionId),
+    regionalSummaries: selectRegionSummaries(data, periodId, regionId),
+    changeSummary: selectChangeSummary(data, regionId, periodId),
+    prioritizedAssets: selectPrioritizedAssets(data, regionId, periodId),
   };
 }
