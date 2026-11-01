@@ -1,0 +1,13 @@
+# Design Decisions
+
+Decisions recorded before implementation, based on the approved product brief.
+
+| Decision | Rationale | Implication for the build | Date added |
+|---|---|---|---|
+| Design FieldOps Command as an attention-management product rather than a comprehensive telemetry display. | Managers need to identify changing conditions and move work forward, not sift through every data point. | Lead with operating condition, changes, regional risk, and prioritized assets; keep detail relevant to action. | 2026-11-01 |
+| Treat the Regional Operations Manager as the primary user. | The MVP must support a clear decision-making role rather than dilute focus across all operational roles. | Optimize the overview and asset workflow for regional review and coordination; treat supervisors and operators as secondary context. | 2026-11-01 |
+| Prioritize operational attention over generic KPIs. | Metrics matter when they help explain condition, change, risk, or action. | Present metrics in an operational narrative and connect them to prioritized assets and context. | 2026-11-01 |
+| Make priority explanations transparent. | Managers must understand why an asset requires attention; priority is not autonomous AI. | Show material supporting reasons and avoid mysterious scores or unsupported predictive claims. | 2026-11-01 |
+| Design desktop-first with tablet support. | The primary use context is operational leadership review, with the need to remain usable on tablets and small screens. | Establish a readable desktop hierarchy and reflow information by priority at narrower widths without horizontal page scrolling. | 2026-11-01 |
+| Use a restrained operational visual system. | The experience should feel credible, calm, focused, precise, and actionable. | Use neutral surfaces, one operational blue, amber for attention, red for critical conditions, green for verified healthy or completed states, and text or icons in addition to color. | 2026-11-01 |
+| Do not include an unnecessary map in the initial MVP. | A map adds value only when it supports a specific operational decision. | Prefer region comparison and prioritized asset views; add a map only if a defined decision requires it and approval is obtained. | 2026-11-01 |
