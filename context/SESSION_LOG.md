@@ -50,3 +50,12 @@
 - **Unresolved questions:** The requested condensed and Roboto typefaces use local font stacks; exact glyph availability depends on the viewer's system.
 - **Next step:** Review the Operations Overview styling and interactions; do not begin the Asset Detail implementation until separately requested.
 - **Validation:** `npm run build` passed TypeScript and production compilation; `npm run validate:overview` passed all selector checks. Browser review verified the Overview, region and time-period filters, filter reset, Cypress Bend selection, working asset-link routing, browser Back, and the invalid asset state. No horizontal overflow was found at 320, 390, 720, 768, 1024, or 1440 px. Checked key brand, status, muted, disabled, and dark-surface text pairs; all sampled text contrast ratios met WCAG AA after darkening the disabled text token.
+
+## 2026-11-01 — FieldOps Command brand-system updates
+
+- **Session goal:** Apply three focused brand updates to the existing Operations Overview without changing data, filters, calculations, routing, or product functionality.
+- **Decisions:** Use Roboto as the only UI font family, establishing hierarchy through weight, size, spacing, and restrained uppercase labels. Replace the header monogram and company text with the supplied TerraVale Energy logo at its natural aspect ratio on the navy header, retaining FieldOps Command as a separate product name. Remove fictional/synthetic/prototype disclosures from visible product copy while keeping fictionalization rules and dataset values intact.
+- **Files changed:** `src/style.css`, `src/App.vue`, `src/views/OperationsOverview.vue`, `src/views/AssetDetailPreview.vue`, `src/domain/overview.mjs`, `index.html`, `context/DESIGN_DECISIONS.md`, `context/SESSION_LOG.md`.
+- **Unresolved questions:** None.
+- **Next step:** Await the next product instruction.
+- **Validation:** Pending production build/type check, overview selector checks, and browser verification of filters and asset links.

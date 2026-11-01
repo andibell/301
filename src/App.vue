@@ -14,10 +14,8 @@ const operationalDate = new Intl.DateTimeFormat("en-US", {
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="topbar">
       <RouterLink class="brand-lockup" to="/" aria-label="FieldOps Command Operations Overview">
-        <img class="brand-logo" :src="terraValeLogo" alt="TerraVale Energy" />
-        <span class="brand-copy">
-          <span class="product-name">FieldOps Command</span>
-        </span>
+        <img class="brand-logo" :src="terraValeLogo" alt="TerraVale Energy logo" />
+        <span class="product-name">FieldOps Command</span>
       </RouterLink>
       <div class="topbar-context">
         <time :datetime="overviewData.metadata.asOfTimestamp">{{ operationalDate }}</time>

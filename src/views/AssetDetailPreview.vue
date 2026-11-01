@@ -34,9 +34,6 @@ const openWorkOrder = computed(
           Open work: {{ openWorkOrder.category }} · {{ openWorkOrder.status }} · {{ openWorkOrder.severity }} severity
         </p>
       </section>
-      <p class="preview-note">
-        This is a focused asset-link destination. The full Asset Detail workflow is a separate implementation increment.
-      </p>
     </template>
     <div v-else class="empty-state">
       <div>
